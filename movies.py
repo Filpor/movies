@@ -7,16 +7,18 @@ class movies:
         self.category=category
         self.views=0
     def __str__(self):
-        return f'{self.title} , {self.year} , {self.views}'
+        return f'{self.title} , {self.year}'
     def play(self,step=1):
         self.views+=step
+
 class serial(movies):
         def __init__(self,seasion,episode,*args, **kwargs):
             super().__init__(*args, **kwargs)
             self.seasion=seasion
             self.episode=episode
         def __str__(self):
-            return f'{self.title} S{self.seasion} E{self.episode} , {self.views}'
+            return f'{self.title} S{self.seasion} E{self.episode}'
+
 movie1=movies(title="Pulp Fiction", year=1997, category="Dramat")
 movie2=movies(title="Zielona Mila", year=1999, category="Dramat")
 movie3=movies(title="Matrix", year=1999, category="Si-Fi")
@@ -31,12 +33,14 @@ serial5=serial(title="Przyjaciele", year=1994, category="Komedia", seasion="07",
 list1=[serial1,movie1,serial2,movie2,serial3,movie3,serial4,movie4,serial5,movie5]
 
 def get_movies():
+    print("Filmy:")
     movie_list=[x for x in list1 if isinstance(x, movies) and not isinstance(x, serial)]
     movie_list=sorted(movie_list, key=lambda movie: movie.title)
     for i in movie_list:
         print(str(i))
 
 def get_serial():
+    print("Seriale:")
     serial_list=[x for x in list1 if isinstance(x, serial)]
     serial_list=sorted(serial_list, key=lambda serial: serial.title)
     for i in serial_list:
@@ -47,6 +51,8 @@ def search(search1):
         if search1==i.title:
             print(str(i))
             break
+        else:
+            pass
     else:
         print("Brak pozycji w bazie")
 
@@ -62,18 +68,19 @@ def generate_views10():
 def top_titles():
     current_date=date.today()
     formated_date=date.strftime(current_date,"%d/%m/%y")
-    print(f"Najpopularniejsze filmy i seriale dnia {formated_date}")
-    
+    print(f"Najpopularniejsze filmy i seriale dnia {formated_date} :")
+    by_views=sorted(list1,key=lambda list1: list1.views, reverse=True)
+    for i in by_views[0:3]:
+        print(str(i),",", i.views)
 
 if __name__ == '__main__':
-    generate_views10()
     print("BIBLIOTEKA FILMÓW I SEIALI")
-    print("Filmy:")
     get_movies()
-    print("Seriale:")
     get_serial()
+    generate_views10()
     top_titles()
-    print("Wpisz tytuł serialu albo filmu:")
+
+    print("Szukaj:")
     search1=str(input())
     search(search1)
     
